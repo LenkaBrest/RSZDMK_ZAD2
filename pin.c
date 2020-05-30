@@ -141,12 +141,28 @@ int main()
       
       char i;
       char k;
-      //char red;
       for(i=0; i<BR_KORISNIKA; i++)
       {
         if((strcmp(korisnici[i], str)) == 0)
         {
            usartPutString("Unesite PIN kod karakter po karakter \r\n");
+           for(k=0; k<4; k++)
+      	   {
+        		while(!usartAvailable());
+        		uneti_pin[k] = usartGetChar();
+        		usartPutChar('*');
+        		_delay_ms(50);
+      	   }
+
+      
+      	   if((strcmp(uneti_pin, PIN[i])) == 0) 
+      	   {
+        	   usartPutString("Tacan PIN \r\n");
+      	   }
+      	   else
+      	   {
+        	   usartPutString("Pogresan PIN \r\n");
+      	   }
            break;
         }        
       }
@@ -154,28 +170,9 @@ int main()
       if(i == BR_KORISNIKA)
       {
       	usartPutString("Niste u bazi \r\n");
-        break;
       }
       
-      for(k=0; k<4; k++)
-      {
-        while(!usartAvailable());
-        uneti_pin[k] = usartGetChar();
-        usartPutChar('*');
-        _delay_ms(50);
-      }
-
-      
-      if((strcmp(uneti_pin, PIN[i])) == 0) 
-      {
-        usartPutString("Tacan PIN \r\n");
-      }
-      else
-      {
-        usartPutString("Pogresan PIN \r\n");
-      }
-                 
-      
+            
 	}
 
 	return 0;
